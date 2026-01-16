@@ -5,15 +5,23 @@ import App from "./App.tsx";
 
 import { BrowserRouter as Router } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ClerkProvider } from "@clerk/clerk-react";
+import { AuthProvider } from "./context/AuthContext";
 
 const client = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={client}>
-      <Router>
-        <App />
-      </Router>
+      <ClerkProvider
+        publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string}
+      >
+        <AuthProvider>
+          <Router>
+            <App />
+          </Router>
+        </AuthProvider>
+      </ClerkProvider>
     </QueryClientProvider>
   </StrictMode>
 );

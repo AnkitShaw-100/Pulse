@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Home, Edit3, Users, PlusSquare } from "lucide-react";
+import { Menu, X, Home, Edit3, Users, PlusSquare, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { signInWithEmail, signOut, user } = useAuth();
 
   return (
     <>
@@ -15,9 +17,7 @@ const Navbar: React.FC = () => {
               Pulse
             </span>
           </Link>
-
-          {/* Desktop Links (explicit, no .map) */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="flex-1 hidden md:flex items-center justify-end gap-3">
             <Link
               to="/"
               className="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition"
@@ -29,6 +29,12 @@ const Navbar: React.FC = () => {
             <Link
               to="/create"
               className="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition"
+              onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
             >
               <Edit3 className="w-4 h-4" />
               <span>Create Post</span>
@@ -37,6 +43,12 @@ const Navbar: React.FC = () => {
             <Link
               to="/communities"
               className="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition"
+              onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
             >
               <Users className="w-4 h-4" />
               <span>Communities</span>
@@ -45,10 +57,30 @@ const Navbar: React.FC = () => {
             <Link
               to="/community/create"
               className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white/90 hover:bg-white/20 transition"
+              onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
             >
               <PlusSquare className="w-4 h-4" />
               <span>Create Community</span>
             </Link>
+            {/* Desktop Auth */}
+            <div className="text-white">
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={signOut}
+                    className="px-2 py-1 bg-white/20 rounded ml-2 flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
 
           {/* Mobile Button */}
@@ -80,7 +112,13 @@ const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                setMenuOpen(false);
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
               className="block px-3 py-2 rounded-md text-white/90 hover:bg-white/5"
               to="/create"
             >
@@ -90,7 +128,13 @@ const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                setMenuOpen(false);
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
               className="block px-3 py-2 rounded-md text-white/90 hover:bg-white/5"
               to="/communities"
             >
@@ -100,7 +144,13 @@ const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                setMenuOpen(false);
+                if (!user) {
+                  e.preventDefault();
+                  signInWithEmail();
+                }
+              }}
               className="block px-3 py-2 rounded-md text-white/90 hover:bg-white/5"
               to="/community/create"
             >
@@ -108,6 +158,22 @@ const Navbar: React.FC = () => {
                 <PlusSquare className="w-4 h-4" /> Create Community
               </div>
             </Link>
+            {user ? (
+              <div className="pt-3 border-t border-white/5 text-white">
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      signOut();
+                    }}
+                    className="px-3 py-2 bg-white/20 rounded flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         )}
       </nav>
