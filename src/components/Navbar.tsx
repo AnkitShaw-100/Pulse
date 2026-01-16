@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav className="bg-slate-900 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20 md:h-16">
+        <div className="max-w-7xl mx-auto px-18 flex items-center justify-between h-20 md:h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <span className="text-xl md:text-2xl font-bold text-white">
@@ -177,9 +177,6 @@ const Navbar: React.FC = () => {
           </div>
         )}
       </nav>
-
-      {/* spacer to prevent content hiding under sticky navbar on small devices */}
-      <div className="h-20 md:h-16" />
     </>
   );
 };
